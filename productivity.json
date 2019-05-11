@@ -1,0 +1,23 @@
+{
+    "productive": [{
+            "app": "Code",
+            "title": "Visual Studio Code$"
+        },
+        {
+            "app": "Gnome-terminal",
+            "title": ".*"
+        },
+        {
+            "app": "Firefox",
+            "title": ".*ActivityWatch.*"
+        }
+    ],
+    "neutral": [{
+        "app": "Firefox",
+        "title": "Search -.*"
+    }],
+    "distracting": [{
+        "app": ".*",
+        "title": "^9GAG"
+    }]
+}
