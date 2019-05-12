@@ -1,2 +1,4 @@
 git+https://github.com/ActivityWatch/aw-core.git@master#egg=aw-core
 -e git://github.com/laszukdawid/aw-client@master#egg=aw-client
+
+requests

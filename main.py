@@ -7,6 +7,7 @@ from collections import defaultdict
 from classificator import Classificator
 from discovery import Discovery
 from event_extractor import EventExtractor
+from exist import ExistClient
 
 
 def extract_duration(event):
@@ -24,6 +25,7 @@ if __name__ == "__main__":
     discovery = Discovery()
     classificator = Classificator()
     event_extractor = EventExtractor()
+    exist_client = ExistClient()
 
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     events = event_extractor.get_events_for_day(yesterday)
@@ -31,7 +33,6 @@ if __name__ == "__main__":
     category_counter = defaultdict(int)
     category_duration = defaultdict(float)
     for event in events:
-        # pprint.pprint(event)
 
         duration = extract_duration(event)
         category = classificator.check_productivity(event)
@@ -45,4 +46,10 @@ if __name__ == "__main__":
     print("Counter: ", category_counter)
     print("Duration: ", category_duration)
 
-    pprint.pprint(discovery.get_all_unique_events())
+    # pprint.pprint(discovery.get_all_unique_events())
+
+    productivity_data = category_duration
+    productivity_data.pop(classificator.UNKNOWN_CATEGORY)
+
+    response = exist_client.send_productivity(yesterday.isoformat()[:10], productivity_data)
+    print(response.json())
