@@ -1,0 +1,12 @@
+from aw_core import Event
+
+class Discovery:
+
+    def __init__(self):
+        self.all_unknown = []
+    
+    def add_event(self, event: Event):
+        self.all_unknown.append(frozenset(event.data.items()))
+    
+    def get_all_unique_events(self):
+        return list(map(dict, self.all_unknown))

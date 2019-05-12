@@ -33,24 +33,23 @@ class Classificator:
             out.append(compiled_rule)
         return out
 
-    def check_category(self, compiled_rules, test_entry):
+    def _check_category(self, compiled_rules: list, test_entry: object):
         for compiled_rule in compiled_rules:
             if self._match_rules(compiled_rule, test_entry):
                 return True
         return False
 
-    def _match_rules(self, compiled_rule, test_entry):
-        for key, value in test_entry.items():
-            if key not in compiled_rule or (not compiled_rule[key].search(value)):
+    def _match_rules(self, compiled_rule: object, test_entry: object):
+        for key, value in compiled_rule.items():
+            if (key not in test_entry) or (not value.search(test_entry[key])):
                 return False
         return True
-
     
-    def check_productivity(self, event):
+    def check_productivity(self, event: object):
         data = event['data']
 
         for category, compiled_rules in self.rules_for_categories.items():
-            if self.check_category(compiled_rules, data):
+            if self._check_category(compiled_rules, data):
                 return category
 
         return self.UNKNOWN_CATEGORY 
