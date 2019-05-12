@@ -4,13 +4,15 @@ import pprint
 
 from collections import defaultdict
 
-from classificator import Classificator
-from discovery import Discovery
-from event_extractor import EventExtractor
-from exist import ExistClient
+from aw_core import Event
+
+from src.classificator import Classificator
+from src.discovery import Discovery
+from src.event_extractor import EventExtractor
+from src.exist import ExistClient
 
 
-def extract_duration(event):
+def extract_duration(event: Event):
     "Extract duration information in seconds. Always returns at least 1 second, even if non provided"
     DURATION_KEY = "duration"
     min_duration = 1
@@ -41,15 +43,16 @@ if __name__ == "__main__":
         category_duration[category] += duration
         if category == classificator.UNKNOWN_CATEGORY:
             discovery.add_event(event)
-            print(category, ' -- ', event['data'])
 
     print("Counter: ", category_counter)
     print("Duration: ", category_duration)
 
-    # pprint.pprint(discovery.get_all_unique_events())
+    for unknown_event in discovery.get_all_unique_events():
+        print(unknown_event)
 
     productivity_data = category_duration
-    productivity_data.pop(classificator.UNKNOWN_CATEGORY)
+    if classificator.UNKNOWN_CATEGORY in productivity_data:
+        productivity_data.pop(classificator.UNKNOWN_CATEGORY)
 
     response = exist_client.send_productivity(yesterday.isoformat()[:10], productivity_data)
     print(response.json())

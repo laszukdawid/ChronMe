@@ -1,21 +1,25 @@
 import json
 import re
 
+from collections import defaultdict
+
 
 class Classificator:
 
     UNKNOWN_CATEGORY = "UNKNOWN"
 
-    def __init__(self, filepath="productivity.json"):
+    def __init__(self, filepath="rules/categorization.json"):
         self.productivity_map = self.load_productivity_map(filepath)
 
         ## TODO: Is it worth to have custom tags? self.setattr(self, key, compiled_regex(f(key)) ?
         self.rules_for_categories = self.parse_productivity_map(self.productivity_map)
     
     def parse_productivity_map(self, categories_and_rules):
-        parsed = {}
-        for category, rules in categories_and_rules.items():
-            parsed[category] = self.compiled_regex(rules)
+        parsed = defaultdict(list)
+        for category_name, category_entry in categories_and_rules.items():
+            for subcategory_name, entry in category_entry.items():
+                productivity = entry["Productivity"]
+                parsed[productivity] += self.compiled_regex(entry["Rules"])
         return parsed
 
     def load_productivity_map(self, filepath=None):
@@ -28,7 +32,6 @@ class Classificator:
         for rule in rules:
             compiled_rule = {}
             for key, value in rule.items():
-                print("{}: {}".format(key, value))
                 compiled_rule[key] = re.compile(value)
             out.append(compiled_rule)
         return out
