@@ -10,9 +10,12 @@ class Classificator:
 
     def __init__(self, filepath="rules/categorization.json"):
         self.productivity_map = self.load_productivity_map(filepath)
-
-        ## TODO: Is it worth to have custom tags? self.setattr(self, key, compiled_regex(f(key)) ?
         self.rules_for_categories = self.parse_productivity_map(self.productivity_map)
+
+    def load_productivity_map(self, filepath=None):
+        with open(filepath) as f:
+            prod_map = json.load(f)
+        return prod_map
     
     def parse_productivity_map(self, categories_and_rules):
         parsed = defaultdict(list)
@@ -21,11 +24,6 @@ class Classificator:
                 productivity = entry["Productivity"]
                 parsed[productivity] += self.compiled_regex(entry["Rules"])
         return parsed
-
-    def load_productivity_map(self, filepath=None):
-        with open(filepath) as f:
-            prod_map = json.load(f)
-        return prod_map
 
     def compiled_regex(self, rules):
         out = []

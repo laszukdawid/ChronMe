@@ -1,0 +1,7 @@
+{
+    "aws": {
+        "profile": "localAwsProfile",
+        "s3Bucket": "bucket",
+        "s3Path": "key"
+    }
+}

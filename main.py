@@ -6,6 +6,8 @@ from collections import defaultdict
 
 from aw_core import Event
 
+from src.config_parser import ConfigParser
+from src.aws import AwsClient
 from src.classificator import Classificator
 from src.discovery import Discovery
 from src.event_extractor import EventExtractor
@@ -24,10 +26,13 @@ def extract_duration(event: Event):
 
 if __name__ == "__main__":
 
+    config_parser = ConfigParser('config.json')
     discovery = Discovery()
     classificator = Classificator()
     event_extractor = EventExtractor()
     exist_client = ExistClient()
+
+    aws_client = AwsClient(config_parser.get_aws_config())
 
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     events = event_extractor.get_events_for_day(yesterday)
@@ -36,11 +41,10 @@ if __name__ == "__main__":
     category_duration = defaultdict(float)
     for event in events:
 
-        duration = extract_duration(event)
         category = classificator.check_productivity(event)
-
         category_counter[category] += 1
-        category_duration[category] += duration
+        category_duration[category] += extract_duration(event)
+
         if category == classificator.UNKNOWN_CATEGORY:
             discovery.add_event(event)
 
@@ -56,3 +60,7 @@ if __name__ == "__main__":
 
     response = exist_client.send_productivity(yesterday.isoformat()[:10], productivity_data)
     print(response.json())
+
+    # Backup data in AWS S3
+    all_buckets_events = {event_extractor.get_main_bucket_id(): events}
+    aws_client.update_aw_day(yesterday, all_buckets_events)
