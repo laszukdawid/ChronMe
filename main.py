@@ -32,8 +32,6 @@ if __name__ == "__main__":
     event_extractor = EventExtractor()
     exist_client = ExistClient()
 
-    aws_client = AwsClient(config_parser.get_aws_config())
-
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     events = event_extractor.get_events_for_day(yesterday)
 
@@ -62,5 +60,7 @@ if __name__ == "__main__":
     print(response.json())
 
     # Backup data in AWS S3
-    all_buckets_events = {event_extractor.get_main_bucket_id(): events}
+    all_buckets_events = event_extractor.get_all_buckets_events()
+
+    aws_client = AwsClient(config_parser.get_aws_config())
     aws_client.update_aw_day(yesterday, all_buckets_events)
