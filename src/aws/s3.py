@@ -4,7 +4,7 @@ from datetime import date, datetime, timedelta
 import boto3
 from botocore.errorfactory import ClientError
 
-class AwsClient:
+class S3Client:
 
     CONFIG_PROFILE_NAME = "profile"
     CONFIG_S3_BUCKET = "s3Bucket"

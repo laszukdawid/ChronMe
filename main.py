@@ -7,11 +7,11 @@ from collections import defaultdict
 from aw_core import Event
 
 from src.config_parser import ConfigParser
-from src.aws import AwsClient
 from src.classificator import Classificator
 from src.discovery import Discovery
 from src.event_extractor import EventExtractor
 from src.exist import ExistClient
+from src.uploader import upload_data
 
 
 def extract_duration(event: Event):
@@ -23,9 +23,7 @@ def extract_duration(event: Event):
     
     return event[DURATION_KEY].total_seconds() or min_duration
 
-
-if __name__ == "__main__":
-
+def main():
     config_parser = ConfigParser('config.json')
     discovery = Discovery()
     classificator = Classificator()
@@ -61,6 +59,8 @@ if __name__ == "__main__":
 
     # Backup data in AWS S3
     all_buckets_events = event_extractor.get_all_buckets_events()
+    upload_data(config_parser, all_buckets_events, yesterday)
 
-    aws_client = AwsClient(config_parser.get_aws_config())
-    aws_client.update_aw_day(yesterday, all_buckets_events)
+
+if __name__ == "__main__":
+    main()
