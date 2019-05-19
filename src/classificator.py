@@ -8,8 +8,11 @@ class Classificator:
 
     UNKNOWN_CATEGORY = "UNKNOWN"
 
-    def __init__(self, filepath="rules/categorization.json"):
-        self.productivity_map = self.load_productivity_map(filepath)
+    def __init__(self, productivity_map=None, filepath="rules/categorization.json"):
+
+        self.productivity_map = productivity_map
+        if self.productivity_map is None:
+            self.productivity_map = self.load_productivity_map(filepath)
         self.rules_for_categories = self.parse_productivity_map(self.productivity_map)
 
     def load_productivity_map(self, filepath=None):

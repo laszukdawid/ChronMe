@@ -1,8 +1,12 @@
 import json
 import os
 import pprint
-import requests
 import sys
+
+try:
+    import requests
+except:
+    from botocore.vendored import requests
 
 class ExistClient:
 

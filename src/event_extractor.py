@@ -21,9 +21,11 @@ class EventExtractor:
             self.all_buckets = self.awc.get_buckets()
         return [bucket for (name, bucket) in self.all_buckets.items() if 'window' in name][0]
     
-    def _get_events_for_all_buckets(self, date: datetime, duration: int=86400, limit: int=9999):
+    def _get_events_for_all_buckets(self, date: datetime, end_date: datetime=None, duration: int=86400, limit: int=9999):
         start_date = date
-        end_date = start_date + datetime.timedelta(seconds=duration)
+        end_date = end_date
+        if end_date is None:
+            end_date = start_date + datetime.timedelta(seconds=duration)
 
         # Wipe previous data
         self._all_buckets_events = {}
@@ -43,8 +45,8 @@ class EventExtractor:
                 return event
         return None
 
-    def get_events_for_day(self, date: datetime, limit: int=99999):
-        self._all_buckets_events = self._get_events_for_all_buckets(date, limit)
+    def get_events_for_day(self, date: datetime, end_date: datetime=None, limit: int=99999):
+        self._all_buckets_events = self._get_events_for_all_buckets(date, end_date=end_date, limit=limit)
         events = self._aggregate_events(self._all_buckets_events)
         return events
 

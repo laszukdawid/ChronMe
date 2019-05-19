@@ -13,6 +13,15 @@ def deep_update(d, u):
             d[k] = v
     return d
 
+def extract_duration(event):
+    "Extract duration information in seconds. Always returns at least 1 second, even if non provided"
+    DURATION_KEY = "duration"
+    min_duration = 1
+    if DURATION_KEY not in event:
+        return min_duration
+    
+    return event[DURATION_KEY].total_seconds() or min_duration
+
 def extract_time_and_duration(event):
     timestamp = datetime.datetime.strptime(event['timestamp'][:19], '%Y-%m-%dT%H:%M:%S')
     duration = datetime.timedelta(seconds=float(event['duration']))
@@ -107,6 +116,12 @@ def compare_events(e1, e2):
             e_old = [new_e1, new_e2]
             
             return e_m, e_old
+
+def parse_merge_events(*all_events):
+    """
+    Merges lists of events based on overlapping time windows.
+    """
+    return reduce(_merge_two_event_lists, map(parse_and_order_events, all_events))
 
 def merge_events(*all_events):
     """

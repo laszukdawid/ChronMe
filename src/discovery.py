@@ -1,11 +1,10 @@
-from aw_core import Event
 
 class Discovery:
 
     def __init__(self):
         self.all_unknown = set()
     
-    def add_event(self, event: Event):
+    def add_event(self, event):
         self.all_unknown.add(frozenset(event['data'].items()))
     
     def get_all_unique_events(self):

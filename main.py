@@ -12,23 +12,14 @@ from src.discovery import Discovery
 from src.event_extractor import EventExtractor
 from src.exist import ExistClient
 from src.uploader import upload_data
+from src.utils import extract_duration
 
-
-def extract_duration(event: Event):
-    "Extract duration information in seconds. Always returns at least 1 second, even if non provided"
-    DURATION_KEY = "duration"
-    min_duration = 1
-    if DURATION_KEY not in event:
-        return min_duration
-    
-    return event[DURATION_KEY].total_seconds() or min_duration
 
 def main():
     config_parser = ConfigParser('config.json')
     discovery = Discovery()
     classificator = Classificator()
     event_extractor = EventExtractor()
-    exist_client = ExistClient()
 
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     events = event_extractor.get_events_for_day(yesterday)
@@ -54,11 +45,14 @@ def main():
     if classificator.UNKNOWN_CATEGORY in productivity_data:
         productivity_data.pop(classificator.UNKNOWN_CATEGORY)
 
+    ## Upload results to the Exist client
+    exist_client = ExistClient()
     response = exist_client.send_productivity(yesterday.isoformat()[:10], productivity_data)
     print(response.json())
 
-    # Backup data in AWS S3
+    # Upload events data to S3
     all_buckets_events = event_extractor.get_all_buckets_events()
+
     upload_data(config_parser, all_buckets_events, yesterday)
 
 
