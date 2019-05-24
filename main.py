@@ -6,13 +6,13 @@ from collections import defaultdict
 
 from aw_core import Event
 
-from src.config_parser import ConfigParser
-from src.classificator import Classificator
-from src.discovery import Discovery
-from src.event_extractor import EventExtractor
-from src.exist import ExistClient
-from src.uploader import upload_data
-from src.utils import extract_duration
+from chronme.config_parser import ConfigParser
+from chronme.classificator import Classificator
+from chronme.discovery import Discovery
+from chronme.event_extractor import EventExtractor
+from chronme.exist import ExistClient
+from chronme.uploader import upload_data
+from chronme.utils import extract_duration
 
 
 def main():

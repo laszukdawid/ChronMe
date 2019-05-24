@@ -5,10 +5,10 @@ import os
 
 from collections import defaultdict
 
-from src.classificator import Classificator
-from src.discovery import Discovery
-from src.exist import ExistClient
-from src.utils import extract_duration, parse_merge_events
+from chronme.classificator import Classificator
+from chronme.discovery import Discovery
+from chronme.exist import ExistClient
+from chronme.utils import extract_duration, parse_merge_events
 
 
 BUCKET_NAME = os.environ["AW_BUCKET"]

@@ -3,3 +3,4 @@ git+https://github.com/ActivityWatch/aw-core.git@master#egg=aw-core
 
 boto3
 requests
+pytest

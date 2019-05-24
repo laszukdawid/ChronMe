@@ -19,7 +19,6 @@ def extract_duration(event):
     min_duration = 1
     if DURATION_KEY not in event:
         return min_duration
-    
     return event[DURATION_KEY].total_seconds() or min_duration
 
 def extract_time_and_duration(event):
@@ -97,7 +96,7 @@ def compare_events(e1, e2):
             e_old = [new_e1, new_e2]
             
             return e_m, e_old
-    # 7 -- 9
+
     elif e1['timestamp'] > e2['timestamp']: # All cases do the same thing
         if e1['timestamp'] >= (e2['timestamp'] + e2['duration']):
             e_m = e2.copy()
