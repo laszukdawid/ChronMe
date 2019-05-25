@@ -12,7 +12,8 @@ class Discovery:
     
     def _lean_data(self, data):
         c_data = data.copy()
-        del c_data['status']
+        if "status" in c_data:
+            del c_data['status']
         return c_data
     
     def add_event(self, event):
