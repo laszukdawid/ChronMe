@@ -38,7 +38,7 @@ def main():
     print("Counter: ", category_counter)
     print("Duration: ", category_duration)
 
-    for unknown_event in discovery.get_all_unique_events():
+    for unknown_event in discovery.get_agg_duration_events_sorted(top_n=20):
         print(unknown_event)
 
     productivity_data = category_duration

@@ -2,6 +2,7 @@ import boto3
 import datetime
 import json
 import os
+import pprint
 
 from collections import defaultdict
 
@@ -55,8 +56,9 @@ def categorize_data(merged_events, rules):
     print("Counter: ", category_counter)
     print("Duration: ", category_duration)
 
-    for unknown_event in discovery.get_all_unique_events():
-        print(unknown_event)
+    for unknown_event in discovery.get_agg_duration_events_sorted(top_n=20):
+        print("Total duration: ", unknown_event[1])
+        pprint.pprint(dict(unknown_event[0]))
 
     productivity_data = category_duration
     if classificator.UNKNOWN_CATEGORY in productivity_data:
