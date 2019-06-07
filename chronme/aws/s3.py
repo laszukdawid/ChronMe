@@ -7,13 +7,14 @@ from botocore.errorfactory import ClientError
 class S3Client:
 
     CONFIG_PROFILE_NAME = "profile"
-    CONFIG_S3_BUCKET = "s3Bucket"
-    CONFIG_S3_PATH = "s3Path"
+    CONFIG_S3_BUCKET = "s3DataBucket"
+    CONFIG_S3_PATH = "s3DataPath"
+    CONFIG_S3_RULES = "s3RulesPath"
 
     def __init__(self, config: dict): 
         self.config = config
 
-        self._session = boto3.session.Session(profile_name=config[self.CONFIG_PROFILE_NAME])
+        self._session = boto3.session.Session(profile_name=config[self.CONFIG_PROFILE_NAME], region_name='us-west-2')
         self._s3 = self._session.client('s3')
 
         self._check_or_create_bucket()
@@ -31,6 +32,9 @@ class S3Client:
         for aw_bucket_name, aw_bucket_events in all_buckets_events.items():
             s3_path = '/'.join([self.config[self.CONFIG_S3_PATH], date_key, aw_bucket_name + '.json'])
             self._upload_json(self.config[self.CONFIG_S3_BUCKET], s3_path, aw_bucket_events)
+    
+    def update_aw_rules(self, rules):
+        self._upload_json(self.config[self.CONFIG_S3_BUCKET], self.config[self.CONFIG_S3_RULES], rules)
     
     def _upload_json(self, bucket: str, key: str, json_data: dict):
         self._s3.put_object(

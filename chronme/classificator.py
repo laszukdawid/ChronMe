@@ -1,4 +1,6 @@
 import json
+import glob
+import os
 import re
 
 from collections import defaultdict
@@ -8,16 +10,20 @@ class Classificator:
 
     UNKNOWN_CATEGORY = "UNKNOWN"
 
-    def __init__(self, productivity_map=None, filepath="rules/categorization.json"):
+    def __init__(self, productivity_map=None, rulespath="rules"):
 
         self.productivity_map = productivity_map
+        print(productivity_map)
         if self.productivity_map is None:
-            self.productivity_map = self.load_productivity_map(filepath)
+            self.productivity_map = self.load_productivity_map(rulespath)
         self.rules_for_categories = self.parse_productivity_map(self.productivity_map)
 
-    def load_productivity_map(self, filepath=None):
-        with open(filepath) as f:
-            prod_map = json.load(f)
+    def load_productivity_map(self, dirpath=None):
+        prod_map = {}
+        for filepath in glob.glob(os.path.join(dirpath, "*.json")):
+            print("filePath: ", filepath)
+            with open(filepath) as file:
+                prod_map.update(json.load(file))
         return prod_map
     
     def parse_productivity_map(self, categories_and_rules):

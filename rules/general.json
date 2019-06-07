@@ -1,0 +1,206 @@
+{
+  "Business": {
+    "General": {
+      "Productivity": "productive",
+      "Rules": []
+    }
+  },
+  "Organization": {
+    "Calendar": {
+      "Productivity": "productive",
+      "Rules": [
+        { "title": "Google Calendar"}
+      ]
+    },
+    "Planner": {
+      "Productivity": "productive",
+      "Rules": [
+        { "title": "Todoist" }
+      , { "url": "todoist.com" }
+      , { "app": "Todoist", "title": "Todoist" }
+      ]
+    }
+  },
+  "Communication": {
+    "General": {
+      "Productivity": "neutral",
+      "Rules": []
+    },
+    "Email": {
+      "Productivity": "neutral",
+      "Rules": [
+        { "title": "FastMail" }
+      , { "title": "Gmail" }
+      ]
+    },
+    "InstantMessage": {
+      "Productivity": "distracting",
+      "Rules": [
+        { "title": "WhatsApp" }
+      ]
+    }
+  },
+  "SocialNetwork": {
+    "General": {
+      "Productivity": "distracting",
+      "Rules": [
+        { "url": "www.facebook" }
+      ]
+    },
+    "Professional": {
+      "Productivity": "productive",
+      "Rules": [
+        { "url": "www.linkedin." }
+      ]
+    }
+  },
+  "Entertainment": {
+    "Comedy": {
+      "Productivity": "distracting",
+      "Rules": [
+        { "title": "^9GAG" }
+      , { "title": "Saturday Morning Breakfast Cereal" }
+      ]
+    },
+    "Games": {
+      "Productivity": "distracting",
+      "Rules": [
+      ]
+    },
+    "Music": {
+      "Productivity": "distracting",
+      "Rules": [
+        { "app": "Spotify" }
+      ]
+    },
+    "Video": {
+      "Productivity": "productive",
+      "Rules": [
+          { "url": "youtube.com" }
+        , { "url": "primevideo.com" }
+      ]
+    }
+  },
+  "NewsForums": {
+    "General": {
+      "Productivity": "distracting",
+      "Rules": [
+          { "url": "bbc.com" }
+        , { "url": "bbc.co.uk" }
+      ]
+    },
+    "Technology": {
+      "Productivity": "distracting",
+      "Rules": [
+        { "url": "news.ycombinator.com" }
+      ]
+    },
+    "Business": {
+      "Productivity": "distracting",
+      "Rules": [
+      ]
+    }
+  },
+  "Learning": {
+    "Languages": {
+      "Productivity": "productive",
+      "Rules": [
+        { "url": "duolingo.com" }
+      ]
+    }
+  },
+  "References": {
+    "General": {
+      "Productivity": "productive",
+      "Rules": [
+      ]
+    },
+    "Goverment": {
+      "Productivity": "productive",
+      "Rules": [
+      ]
+    },
+    "Business": {
+      "Productivity": "productive",
+      "Rules": [
+      ]
+    },
+    "Knowledge": {
+      "Productivity": "productive",
+      "Rules": [
+        { "url": "wikipedia.org" }
+      ]
+    },
+    "PersonalImprovement": {
+      "Productivity": "productive",
+      "Rules": [
+      ]
+    }
+  },
+  "Engineering": {
+    "General": {
+      "Productivity": "productive",
+      "Rules": [
+        { "app": "GitKraken" }
+      , { "app": "Gnome-terminal" }
+      ]
+    },
+    "Writing": {
+      "Productivity": "productive",
+      "Rules": [
+        { "app": "Code" }
+      ]
+    },
+    "Learning": {
+      "Productivity": "productive",
+      "Rules": [
+      ]
+    },
+    "Resources": {
+      "Productivity": "productive",
+      "Rules": [
+        { "url": "github.com" }
+      , { "url": "scikit-learn.org" }
+      , { "url": "docs.aws.amazon.com"}
+      , { "url": "stackoverflow.com" }
+      , { "url": "unix.stackexchange.com/questions" }
+      , { "url": "askubuntu.com/questions" }
+      , { "url": "docs.python.org" }
+      ]
+    }
+  },
+  "General": {
+    "Shopping": {
+      "Productivity": "distracting",
+      "Rules": [
+        { "title": "amazon.c" }
+      ]
+    },
+    "Financial": {
+      "Productivity": "neutral",
+      "Rules": [
+      ]
+    },
+    "Search": {
+      "Productivity": "neutral",
+      "Rules": [
+        { "url": "duckduckgo.com" }
+      , { "url": "bing.com" }
+      , { "url": "google.com/search?" }
+      ]
+    },
+    "Setting": {
+      "Productivity": "neutral",
+      "Rules": [
+        { "app": "Firefox", "title": "^Mozilla Firefox"}
+      ]
+    },
+    "Misc": {
+      "Productivity": "neutral",
+      "Rules": [
+        { "app": "Firefox", "url": "about:blank" },
+        { "app": "Firefox", "url": "about:newtab" }
+      ]
+    }
+  }
+}
