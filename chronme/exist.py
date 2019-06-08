@@ -17,7 +17,7 @@ class ExistClient:
 
     def _get_token(self):
         "Fail badly if token not there"
-        return os.environ["EXIST_AW_TOKEN"]
+        return os.environ["EXIST_TOKEN"]
 
     def send_productivity(self, date, productivity_min_map):
         create_attribute = lambda key, value: {"name": key + "_min", "value": value/60, "date": date}

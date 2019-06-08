@@ -30,9 +30,13 @@ def get_all_data(isodate):
     return all_events
 
 def get_rules():
-    key = "rules/categorization.json"
-    obj = s3.get_object(Bucket=BUCKET_NAME, Key=key)
-    rules = json.loads(obj["Body"].read())
+    objects = s3.list_objects(Bucket=BUCKET_NAME, Prefix="rules")
+    rules = {}
+    for s3_rules_file in objects["Contents"]:
+        key = s3_rules_file["Key"]
+        print(key)
+        obj = s3.get_object(Bucket=BUCKET_NAME, Key=key)
+        rules.update(json.loads(obj["Body"].read()))
     return rules
 
 def merge_all_events(all_buckets_events):
