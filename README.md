@@ -24,6 +24,20 @@ export AW_BUCKET=
 export EXIST_TOKEN=
 ```
 
+## Dependencies
+All dependencies are installed through the `pip` with 
+```sh
+$ pip install {package} -t ./dependencies/
+```
+
+## Running locally
+Make sure that you have correct environment variables set and that you have all necessary Python packages.
+
+From the root execute
+```
+> python src/main.py
+```
+
 ## AWS preparation
 ### IAM role
 Required permissions:

@@ -22,17 +22,17 @@ class S3Client:
     def _check_or_create_bucket(self):
         s3_bucket = self.config[self.CONFIG_S3_BUCKET]
         s3_path = self.config[self.CONFIG_S3_PATH]
-        try:
-            self._s3.head_object(Bucket=s3_bucket, Key=s3_path)
-        except ClientError:
-            self._s3.create_bucket(Bucket=s3_bucket)
+        # try:
+        #     self._s3.head_object(Bucket=s3_bucket, Key=s3_path, )
+        # except ClientError:
+        #     self._s3.create_bucket(Bucket=s3_bucket)
 
     def update_aw_day(self, date, all_buckets_events: dict):
         date_key = date.isoformat()[:10]
         for aw_bucket_name, aw_bucket_events in all_buckets_events.items():
             s3_path = '/'.join([self.config[self.CONFIG_S3_PATH], date_key, aw_bucket_name + '.json'])
             self._upload_json(self.config[self.CONFIG_S3_BUCKET], s3_path, aw_bucket_events)
-    
+
     def update_aw_rules(self, rules):
         self._upload_json(self.config[self.CONFIG_S3_BUCKET], self.config[self.CONFIG_S3_RULES], rules)
     

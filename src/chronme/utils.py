@@ -31,12 +31,12 @@ def parse_event(event):
     return event
 
 def order_events(events):
-    return sorted(events, key=lambda k: k['timestamp']) 
+    return sorted(events, key=lambda k: k['timestamp'])
 
 def parse_and_order_events(events):
     return order_events(list(map(parse_event, events)))
     #return order_events(list(map(extract_time_and_duration, events)))
-    
+
 def del_timestamp_duration(e):
     del e['timestamp']
     del e['duration']
@@ -52,7 +52,7 @@ def compare_events(e1, e2):
         return e2, [None, None]
     if e2 is None:
         return e1, [None, None]
-    
+
     if e1['timestamp'] == e2['timestamp']:
         if e1['duration'] == e2['duration']:
             e_m = copy_all_except_time(e1, e2)
@@ -61,22 +61,22 @@ def compare_events(e1, e2):
 
         elif e1['duration'] > e2['duration']:
             e_m = copy_all_except_time(e2, e1)
-            
+
             new_e1 = e1.copy()
             new_e1['timestamp'] = e2['timestamp'] + e2['duration']
             new_e1['duration'] = e1['duration'] - e2['duration']
             e_old = [new_e1, None]
-            
+
             return e_m, e_old
 
         else:
             e_m = copy_all_except_time(e1, e2)
-            
+
             new_e2 = e2.copy()
             new_e2['timestamp'] = e1['timestamp'] + e1['duration']
             new_e2['duration'] = e2['duration'] - e1['duration']
             e_old = [None, new_e2]
-            
+
             return e_m, e_old
 
     elif e1['timestamp'] < e2['timestamp']: # All cases do the same thing
@@ -84,17 +84,17 @@ def compare_events(e1, e2):
             e_m = e1.copy()
             e_old = [None, e2.copy()]
             return e_m, e_old
-        
+
         else:
             e_m = e1.copy()
             e_m['duration'] = e2['timestamp'] - e1['timestamp']
-            
+
             new_e1 = e1.copy()
             new_e1['timestamp'] = e2['timestamp']
             new_e1['duration'] = e1['duration'] - e_m['duration']
             new_e2 = e2.copy()
             e_old = [new_e1, new_e2]
-            
+
             return e_m, e_old
 
     elif e1['timestamp'] > e2['timestamp']: # All cases do the same thing
@@ -102,18 +102,18 @@ def compare_events(e1, e2):
             e_m = e2.copy()
             e_old = [e1.copy(), None]
             return e_m, e_old
-        
+
         else:
             e_m = e2.copy()
             e_m['duration'] = e1['timestamp'] - e2['timestamp']
-            
+
             new_e1 = e1.copy()
             new_e2 = e2.copy()
             new_e2['timestamp'] = e1['timestamp']
             new_e2['duration'] = e2['duration'] - e_m['duration']
 
             e_old = [new_e1, new_e2]
-            
+
             return e_m, e_old
 
 def parse_merge_events(*all_events):
@@ -134,7 +134,7 @@ def _merge_two_event_lists(*all_events):
     """
     if len(all_events) != 2:
         raise AttributeError("Expected only two lists")
-    
+
     # If either is empty, return one that's not empty. If both empty, return any.
     #if len(all_events[0]) == 0 or len(all_events[1]) == 0:
     if not all(all_events):
