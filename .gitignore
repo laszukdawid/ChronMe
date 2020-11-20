@@ -1,0 +1,10 @@
+/dependencies/
+/venv/
+/.private
+__pycache__
+
+*.bk
+rules/categorization.json
+env_variables.sh
+.vscode
+.pytest_cache/*
