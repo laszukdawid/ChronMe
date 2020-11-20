@@ -5,6 +5,42 @@ import re
 
 from collections import defaultdict
 
+class YamlReaderError(Exception):
+    pass
+
+def data_merge(dest, src):
+    """Merges b into a and return merged result
+    Stolen from https://stackoverflow.com/a/15836901/2687601
+
+    NOTE: tuples and arbitrary objects are not handled as it is totally ambiguous what should happen"""
+    key = None
+    try:
+        if dest is None or isinstance(dest, (str, int, float)):
+            # border case for first run or if a is a primitive
+            dest = src
+        elif isinstance(dest, list):
+            # lists can be only appended
+            if isinstance(src, list):
+                # merge lists
+                dest.extend(src)
+            else:
+                # append to list
+                dest.append(src)
+        elif isinstance(dest, dict):
+            # dicts must be merged
+            if isinstance(src, dict):
+                for key in src:
+                    if key in dest:
+                        dest[key] = data_merge(dest[key], src[key])
+                    else:
+                        dest[key] = src[key]
+            else:
+                raise YamlReaderError('Cannot merge non-dict "%s" into dict "%s"' % (src, dest))
+        else:
+            raise YamlReaderError('NOT IMPLEMENTED "%s" into "%s"' % (src, dest))
+    except TypeError as e:
+        raise YamlReaderError('TypeError "%s" in key "%s" when merging "%s" into "%s"' % (e, key, src, dest))
+    return dest
 
 class Classificator:
 
@@ -23,7 +59,8 @@ class Classificator:
         for filepath in glob.glob(os.path.join(dirpath, "*.json")):
             print("filePath: ", filepath)
             with open(filepath) as file:
-                prod_map.update(json.load(file))
+                f_json = json.load(file)
+                data_merge(prod_map, f_json)
         return prod_map
     
     def parse_productivity_map(self, categories_and_rules):

@@ -15,13 +15,23 @@ from chronme.uploader import upload_data
 from chronme.utils import extract_duration
 
 
+def save_unknown_to_disk(date, unknown_events):
+    try:
+        with open(f"unknown-{date}", 'w') as f:
+            for unknown_event in unknown_events:
+                f.write(f"{int(unknown_event[1])} sec - {unknown_event[0]}\n")
+    except:
+        # TODO: Nasty hack to not run on lambda
+        pass
+
+
 def main():
     config_parser = ConfigParser('config.json')
     discovery = Discovery()
     classificator = Classificator()
     event_extractor = EventExtractor()
 
-    yesterday = datetime.date.today() - datetime.timedelta(days=1)
+    yesterday = datetime.date.today() - datetime.timedelta(days=7)
     events = event_extractor.get_events_for_day(yesterday)
 
     category_counter = defaultdict(int)
@@ -41,6 +51,8 @@ def main():
     for unknown_event in discovery.get_agg_duration_events_sorted(top_n=20):
         pprint.pprint(unknown_event)
 
+    save_unknown_to_disk(yesterday, discovery.get_agg_duration_events_sorted())
+
     productivity_data = category_duration
     if classificator.UNKNOWN_CATEGORY in productivity_data:
         productivity_data.pop(classificator.UNKNOWN_CATEGORY)
@@ -48,6 +60,8 @@ def main():
     ## Upload results to the Exist client
     exist_client = ExistClient()
     response = exist_client.send_productivity(yesterday.isoformat()[:10], productivity_data)
+    print("Respone from the Exist.io:")
+    exist_client.validate_response(response)
     pprint.pprint(response.json())
 
     # Upload events data to S3

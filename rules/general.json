@@ -29,7 +29,7 @@
     "Email": {
       "Productivity": "neutral",
       "Rules": [
-        { "title": "FastMail" }
+        { "title": "Fast[mM]ail" }
       , { "title": "Gmail" }
       ]
     },
@@ -38,6 +38,12 @@
       "Rules": [
         { "title": "WhatsApp" }
       ]
+    },
+    "Social": {
+      "Productivity": "neutral",
+      "Rules": [
+        { "app": "discord" }
+      ]
     }
   },
   "SocialNetwork": {
@@ -45,12 +51,16 @@
       "Productivity": "distracting",
       "Rules": [
         { "url": "www.facebook" }
+        , { "url": "www.twitter" }
+        , { "app": "Firefox", "title": "Twitter . Mozilla Firefox$" }
+        , { "app": "Firefox", "title": "^Facebook" }
       ]
     },
     "Professional": {
       "Productivity": "productive",
       "Rules": [
-        { "url": "www.linkedin." }
+          { "url": "www.linkedin." }
+        , { "app": "Firefox", "title": "LinkedIn . Mozilla Firefox$" }
       ]
     }
   },
@@ -59,12 +69,14 @@
       "Productivity": "distracting",
       "Rules": [
         { "title": "^9GAG" }
+      , { "app": "Firefox", "title": "9GAG . Mozilla Firefox$" }
       , { "title": "Saturday Morning Breakfast Cereal" }
       ]
     },
     "Games": {
       "Productivity": "distracting",
       "Rules": [
+        {}
       ]
     },
     "Music": {
@@ -78,6 +90,8 @@
       "Rules": [
           { "url": "youtube.com" }
         , { "url": "primevideo.com" }
+        , { "app": "Firefox", "title": "YouTube . Mozilla Firefox$" }
+        , { "app": "Firefox", "title": "^Netflix" }
       ]
     }
   },
@@ -87,6 +101,7 @@
       "Rules": [
           { "url": "bbc.com" }
         , { "url": "bbc.co.uk" }
+        , { "app": "Firefox", "title": "CBC News . Mozilla Firefox$"}
       ]
     },
     "Technology": {
@@ -107,9 +122,21 @@
       "Rules": [
         { "url": "duolingo.com" }
       ]
+    },
+    "General": {
+      "Productivity": "productive",
+      "Rules": [
+          { "app": "Firefox", "title": "Wiktionary . Mozilla Firefox$" }
+        , { "app": "Firefox", "title": "Merriam.Webster . Mozilla Firefox$" }
+      ]
     }
   },
   "References": {
+    "Business": {
+      "Productivity": "productive",
+      "Rules": [
+      ]
+    },
     "General": {
       "Productivity": "productive",
       "Rules": [
@@ -120,15 +147,16 @@
       "Rules": [
       ]
     },
-    "Business": {
-      "Productivity": "productive",
-      "Rules": [
-      ]
-    },
     "Knowledge": {
       "Productivity": "productive",
       "Rules": [
         { "url": "wikipedia.org" }
+      ]
+    },
+    "Maps": {
+      "Productivity": "neutral",
+      "Rules": [
+        { "app": "Firefox", "title": "Google Maps . Mozilla Firefox$"}
       ]
     },
     "PersonalImprovement": {
@@ -166,6 +194,7 @@
       , { "url": "unix.stackexchange.com/questions" }
       , { "url": "askubuntu.com/questions" }
       , { "url": "docs.python.org" }
+      , { "app": "Firefox", "title": "Microsoft Docs . Mozilla Firefox$" }
       ]
     }
   },

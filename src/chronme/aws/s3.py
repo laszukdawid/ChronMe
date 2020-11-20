@@ -29,15 +29,18 @@ class S3Client:
 
     def update_aw_day(self, date, all_buckets_events: dict):
         date_key = date.isoformat()[:10]
+        responses = []
         for aw_bucket_name, aw_bucket_events in all_buckets_events.items():
             s3_path = '/'.join([self.config[self.CONFIG_S3_PATH], date_key, aw_bucket_name + '.json'])
-            self._upload_json(self.config[self.CONFIG_S3_BUCKET], s3_path, aw_bucket_events)
+            response = self._upload_json(self.config[self.CONFIG_S3_BUCKET], s3_path, aw_bucket_events)
+            responses.append(response)
+        return responses
 
     def update_aw_rules(self, rules):
         self._upload_json(self.config[self.CONFIG_S3_BUCKET], self.config[self.CONFIG_S3_RULES], rules)
     
     def _upload_json(self, bucket: str, key: str, json_data: dict):
-        self._s3.put_object(
+        return self._s3.put_object(
             Bucket=bucket,
             Key=key,
             Body=(bytes(json.dumps(json_data, default=self._json_serializer).encode('UTF-8')))

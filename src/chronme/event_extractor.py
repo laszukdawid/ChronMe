@@ -45,7 +45,7 @@ class EventExtractor:
                 return event
         return None
 
-    def get_events_for_day(self, date: datetime, end_date: datetime=None, limit: int=99999):
+    def get_events_for_day(self, date: datetime.date, end_date: datetime=None, limit: int=99999):
         is_afk = lambda e: "data" in e and "status" in e["data"] and e["data"]["status"] == 'afk'
         self._all_buckets_events = self._get_events_for_all_buckets(date, end_date=end_date, limit=limit)
         hosts = list(set(_[1] for _ in (key.split("_") for key in self._all_buckets_events.keys() if "_" in key)))

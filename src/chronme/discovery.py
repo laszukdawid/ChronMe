@@ -1,5 +1,6 @@
-from collections import defaultdict
 import operator
+from collections import defaultdict
+from typing import Any, List, Tuple
 
 class Discovery:
     """Servers purpose of discovering insights from the data."""
@@ -10,7 +11,8 @@ class Discovery:
 
         self._refresh_cache = False
     
-    def _lean_data(self, data):
+    @staticmethod
+    def _lean_data(data):
         c_data = data.copy()
         if "status" in c_data:
             del c_data['status']
@@ -30,7 +32,7 @@ class Discovery:
     def get_agg_duration_events(self):
         return self.events_duration
     
-    def get_agg_duration_events_sorted(self, top_n=-1):
+    def get_agg_duration_events_sorted(self, top_n=-1) -> List[Tuple[Any, int]]:
         if self._refresh_cache:
             self._events_duration_sorted = sorted(self.get_agg_duration_events().items(),
                                                   key=operator.itemgetter(1),
