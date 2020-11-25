@@ -1,14 +1,15 @@
 import operator
+from aw_core.models import Event
 from collections import defaultdict
 from typing import Any, List, Tuple
+
 
 class Discovery:
     """Servers purpose of discovering insights from the data."""
 
     def __init__(self):
-        self.events_duration = defaultdict(int)
+        self.events_duration = defaultdict(float)
         self._events_duration_sorted = []
-
         self._refresh_cache = False
     
     @staticmethod
@@ -18,10 +19,10 @@ class Discovery:
             del c_data['status']
         return c_data
     
-    def add_event(self, event):
+    def add_event(self, event: Event):
         data = self._lean_data(event['data'])
-        duration_seconds = event['duration'].total_seconds()
-        key = frozenset(data.items())
+        duration_seconds: float = event['duration'].total_seconds()
+        key = str(sorted(frozenset(data.items()), key=operator.itemgetter(0)))
         self.events_duration[key] += duration_seconds
 
         self._refresh_cache = True
@@ -32,7 +33,9 @@ class Discovery:
     def get_agg_duration_events(self):
         return self.events_duration
     
-    def get_agg_duration_events_sorted(self, top_n=-1) -> List[Tuple[Any, int]]:
+    def get_agg_duration_events_sorted(self, top_n=-1) -> List[Tuple[Any, float]]:
+        """
+        """
         if self._refresh_cache:
             self._events_duration_sorted = sorted(self.get_agg_duration_events().items(),
                                                   key=operator.itemgetter(1),

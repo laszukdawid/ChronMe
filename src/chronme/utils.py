@@ -1,9 +1,11 @@
 import collections
-import copy
 import datetime
 
+from aw_core.models import Event
 from functools import reduce
+from typing import Dict, List
 
+DURATION_KEY = "duration"
 
 def deep_update(d, u):
     for k, v in u.items():
@@ -13,24 +15,23 @@ def deep_update(d, u):
             d[k] = v
     return d
 
-def extract_duration(event):
+def extract_duration(event) -> int:
     "Extract duration information in seconds. Always returns at least 1 second, even if non provided"
-    DURATION_KEY = "duration"
     min_duration = 1
     if DURATION_KEY not in event:
         return min_duration
     return event[DURATION_KEY].total_seconds() or min_duration
 
-def extract_time_and_duration(event):
+def extract_time_and_duration(event) -> Dict:
     timestamp = datetime.datetime.strptime(event['timestamp'][:19], '%Y-%m-%dT%H:%M:%S')
     duration = datetime.timedelta(seconds=float(event['duration']))
     return {"timestamp": timestamp, "duration": duration}
 
-def parse_event(event):
+def parse_event(event: Event) -> Event:
     event.update(extract_time_and_duration(event))
     return event
 
-def order_events(events):
+def order_events(events: List[Event]) -> List[Event]:
     return sorted(events, key=lambda k: k['timestamp'])
 
 def parse_and_order_events(events):
@@ -128,7 +129,7 @@ def merge_events(*all_events):
     """
     return reduce(_merge_two_event_lists, map(order_events, all_events))
 
-def _merge_two_event_lists(*all_events):
+def _merge_two_event_lists(*all_events) -> List[Event]:
     """
     Mergers two lists of events based on overlapping time windows.
     """

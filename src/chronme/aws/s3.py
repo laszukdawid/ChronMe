@@ -1,6 +1,7 @@
 import json
 
 from datetime import date, datetime, timedelta
+import logging
 import boto3
 from botocore.errorfactory import ClientError
 
@@ -10,6 +11,8 @@ class S3Client:
     CONFIG_S3_BUCKET = "s3DataBucket"
     CONFIG_S3_PATH = "s3DataPath"
     CONFIG_S3_RULES = "s3RulesPath"
+
+    logger = logging.getLogger("S3Client")
 
     def __init__(self, config: dict): 
         self.config = config
@@ -28,6 +31,7 @@ class S3Client:
         #     self._s3.create_bucket(Bucket=s3_bucket)
 
     def update_aw_day(self, date, all_buckets_events: dict):
+        self.logger.debug("Uploading events for date '%s' from buckets %s", date, list(all_buckets_events.keys()))
         date_key = date.isoformat()[:10]
         responses = []
         for aw_bucket_name, aw_bucket_events in all_buckets_events.items():

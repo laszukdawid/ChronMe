@@ -3,7 +3,9 @@ import glob
 import os
 import re
 
+from aw_core.models import Event
 from collections import defaultdict
+from typing import Any, Dict, List
 
 class YamlReaderError(Exception):
     pass
@@ -49,12 +51,12 @@ class Classificator:
     def __init__(self, productivity_map=None, rulespath="rules"):
 
         self.productivity_map = productivity_map
-        print(productivity_map)
         if self.productivity_map is None:
             self.productivity_map = self.load_productivity_map(rulespath)
         self.rules_for_categories = self.parse_productivity_map(self.productivity_map)
 
-    def load_productivity_map(self, dirpath=None):
+    @staticmethod
+    def load_productivity_map(dirpath=None):
         prod_map = {}
         for filepath in glob.glob(os.path.join(dirpath, "*.json")):
             print("filePath: ", filepath)
@@ -63,15 +65,8 @@ class Classificator:
                 data_merge(prod_map, f_json)
         return prod_map
     
-    def parse_productivity_map(self, categories_and_rules):
-        parsed = defaultdict(list)
-        for category_name, category_entry in categories_and_rules.items():
-            for subcategory_name, entry in category_entry.items():
-                productivity = entry["Productivity"]
-                parsed[productivity] += self.compiled_regex(entry["Rules"])
-        return parsed
-
-    def compiled_regex(self, rules):
+    @staticmethod
+    def compiled_regex(rules):
         out = []
         for rule in rules:
             compiled_rule = {}
@@ -80,19 +75,28 @@ class Classificator:
             out.append(compiled_rule)
         return out
 
-    def _check_category(self, compiled_rules: list, test_entry: object):
+    def parse_productivity_map(self, categories_and_rules) -> Dict[str, Any]:
+        parsed = defaultdict(list)
+        for category_name, category_entry in categories_and_rules.items():
+            for subcategory_name, entry in category_entry.items():
+                productivity = entry["Productivity"]
+                parsed[productivity] += self.compiled_regex(entry["Rules"])
+        return parsed
+
+    def _check_category(self, compiled_rules: list, test_entry):
         for compiled_rule in compiled_rules:
             if self._match_rules(compiled_rule, test_entry):
                 return True
         return False
 
-    def _match_rules(self, compiled_rule: object, test_entry: object):
+    @staticmethod
+    def _match_rules(compiled_rule, test_entry):
         for key, value in compiled_rule.items():
             if (key not in test_entry) or (not value.search(test_entry[key])):
                 return False
         return True
     
-    def check_productivity(self, event: object):
+    def check_productivity(self, event: Event):
         data = event['data']
 
         for category, compiled_rules in self.rules_for_categories.items():
