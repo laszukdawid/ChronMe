@@ -61,8 +61,7 @@ def categorize_data(merged_events, rules):
     print("Duration: ", category_duration)
 
     for unknown_event in discovery.get_agg_duration_events_sorted(top_n=20):
-        print("Total duration: ", unknown_event[1])
-        pprint.pprint(dict(unknown_event[0]))
+        pprint.pprint(unknown_event)
 
     productivity_data = category_duration
     if classificator.UNKNOWN_CATEGORY in productivity_data:
@@ -72,7 +71,9 @@ def categorize_data(merged_events, rules):
 
 def update_exist(isodate, productivity_data):
     exist_client = ExistClient()
-    return exist_client.send_productivity(isodate, productivity_data)
+    response = exist_client.send_productivity(isodate, productivity_data)
+    exist_client.validate_response(response)
+    return response
 
 def lambda_handler(event, context):
     yesterday = datetime.datetime.today() - datetime.timedelta(days=1)
@@ -84,4 +85,4 @@ def lambda_handler(event, context):
     productivity_data = categorize_data(merged_events, rules)
     response = update_exist(isodate, productivity_data)
 
-    return "All good! Fuck-tastic!\n" + str(response.json())
+    return "All good!\n" + str(response.json())

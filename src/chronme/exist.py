@@ -1,10 +1,5 @@
 import os
-from typing import Dict
-
-try:
-    import requests
-except:
-    from botocore.vendored import requests
+import requests
 
 
 class ExistClient:

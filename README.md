@@ -26,9 +26,9 @@ export EXIST_TOKEN={FILL_ME}
 I suggest that you add these to your environment setting so that they're always there and you don't have to check/update each time. In my case, since I run Ubuntu, I've added these to the end of `~/.bashrc` file.
 
 ## Installation
-First of all, once you checked out this package, make sure that you have all the depenedncies installed. Go to the root
+Given that we need to add some dependnecies to the Lambda we will have to install these locally and then zip them.
+You'll see that there will be `dependencies` directory. It's created by `scripts/lambda_deploy.sh`. Do not delete it.
 
-Given that we need to add some dependnecies to the Lambda we will have to install these locally and then zip them. You'll see that there will be `dependencies` directory. It's created by `scripts/lambda_deploy.sh`. Do not delete it.
 
 Add the `aw-exist-sync.sh` to the cron. To do so I'd suggest opening cron editor with 
 ```sh
